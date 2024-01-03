@@ -1,0 +1,26 @@
+extends ../layout/index
+
+block content
+    section 
+        h1(class='text-4xl my-10 font-extrabold text-center') Bienes 
+            span(class='font-normal') Raices
+        h2(class='text-center text-2xl font-bold')=page
+        div(class='mt-8 mx-auto max-w-md')
+            div(class='bg-white py-8 px-4 shadow border rounded-lg')
+                form(action='/auth/signup' method='POST')
+                    div 
+                        label(class='block text-gray-500 text-sm uppercase mb-2 font-bold', for='name') Nombre
+                        input(id='name' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700', type='text', placeholder='Tu Nombre' name='name')
+                    div
+                        label(class='block text-gray-500 text-sm uppercase mb-2 font-bold pt-4', for='email') Email
+                        input(id='email' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700', type='email', placeholder='Tu Email' name='email')
+                    div
+                        label(class='block text-gray-500 text-sm uppercase mb-2 font-bold pt-4', for='password') Password
+                        input(id='passsword' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700', type='password', placeholder='Tu Password' name='password')
+                    div
+                        label(class='block text-gray-500 text-sm uppercase mb-2 font-bold pt-4', for='confirm') Confirmar Password
+                        input(id='confirm' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700', type='password', placeholder='Repite tu Password' name='confirm')
+                    input(class='block w-full mt-4 text-white font-bold bg-indigo-600 hover:bg-indigo-700 py-3 px-4 rounded cursor-pointer', type='submit', value='Crear Cuenta')
+                    p(class='text-center text-sm mt-4') ¿Ya tienes una cuenta? 
+                        a(class='text-sky-950 font-bold hover:underline', href='/auth/login') Iniciar Sesion
+            
