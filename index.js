@@ -1,6 +1,8 @@
 // Siempre se debe agregar en el package.json el "type": "module" antes de usuarlo, de lo contrario no funcionará y se deberá usar require en lugar de import P.E => const express = require('express');
 import dotenv from 'dotenv';
 import express from 'express';
+import csrf from 'csurf';
+import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js'
 import db from './config/db.js';
 
@@ -9,6 +11,12 @@ const app = express();
 
 // Habilitar body-parser para leer los datos del formulario
 app.use(express.urlencoded({ extended: true }));
+
+// Habilitar cookie-parser
+app.use(cookieParser());
+
+// Habilitar csurf
+app.use(csrf({ cookie: true }));
 
 // Conexión a la base de datos.
 try {
@@ -50,6 +58,21 @@ app.use(express.static('public'));
 
 // Create PORT
 const PORT = process.env.BACKEND_PORT || 4000;
+
+// Qué es la protección CSRF?
+// CSRF significa Cross-Site Request Forgery.
+// Es un tipo de ataque que permite a un atacante enviar peticiones HTTP desde un sitio web vulnerable. P.E: Un atacante puede enviar una petición HTTP desde un sitio web vulnerable para eliminar una cuenta de usuario.
+// Para evitar este tipo de ataques, se debe usar un token CSRF. Este token se genera en el servidor y se envía al cliente. Luego, el cliente envía el token al servidor. Si el token es correcto, el servidor procesa la petición. Si el token es incorrecto, el servidor rechaza la petición.
+// Para usar el token CSRF, se debe instalar el paquete csurf con npm i csurf.
+// Para usar el token CSRF, se debe usar el método .use de csurf. P.E: app.use(csurf());
+// Para enviar el token CSRF al cliente, se debe usar el método .locals de res. P.E: res.locals.csrfToken = req.csrfToken();
+
+// ¿Para qué se usa la dependencia cookie-parse y cómo ayuda a mi proyecto?
+// Esta dependencia nos permite leer las cookies que se envían desde el cliente. P.E: Si el cliente envía una cookie con el nombre 'token', podemos leerla con req.cookies.token.
+// Para usar cookie-parser, se debe instalar con npm i cookie-parse.
+// Para usar cookie-parser, se debe usar el método .use. P.E: app.use(cookieParse());
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

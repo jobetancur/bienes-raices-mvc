@@ -36,7 +36,6 @@ const User = db.define('users', {
         defaultValue: 0
     },
     token: Sequelize.STRING,
-    confirmValue: Sequelize.BOOLEAN,
 }, {
     hooks: {
         beforeCreate: async function(user){

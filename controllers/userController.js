@@ -13,8 +13,12 @@ const loginForm = (req, res) => {
 
 // GET para registrar un nuevo usuario
 const signUpForm = (req, res) => {
+
+    console.log(req.csrfToken()); // Imprimir el token CSRF en la consola
+
     res.render('auth/signup', {
-        page: 'Crear cuenta'
+        page: 'Crear cuenta',
+        csrfToken: req.csrfToken(),
     });
 }
 
@@ -34,6 +38,7 @@ const newSignUpForm = async (req, res) => {
     if(!result.isEmpty()) {
         return res.render('auth/signup', {
             page: 'Crear cuenta',
+            csrfToken: req.csrfToken(),
             errors: result.array(),
             user: { // Enviar los datos del formulario para que no se borren
                 name: req.body.name,
@@ -48,6 +53,7 @@ const newSignUpForm = async (req, res) => {
     if(userRegistered) {
         return res.render('auth/signup', {
             page: 'Crear cuenta',
+            csrfToken: req.csrfToken(),
             errors: [{ msg: 'El usuario ya está registrado' }],
         });
     }
