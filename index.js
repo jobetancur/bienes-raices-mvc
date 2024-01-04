@@ -1,9 +1,18 @@
 // Siempre se debe agregar en el package.json el "type": "module" antes de usuarlo, de lo contrario no funcionará y se deberá usar require en lugar de import P.E => const express = require('express');
 import express from 'express';
 import userRoutes from './routes/userRoutes.js'
+import db from './config/db.js';
 
 // Create express instnace
 const app = express();
+
+// Conexión a la base de datos.
+try {
+  await db.authenticate();
+  console.log('Database connected');
+} catch (error) {
+  console.log(error);
+}
 
 // El método .use busca todas las rutas que inicien o se deriven de la ruta especificada. En este caso, todas las rutas que se deriven de la ruta '/'. Por otro lado, si usamos .get, solo se buscará la ruta especificada, no escanea nada más.
 app.use('/auth', userRoutes);
