@@ -1,0 +1,49 @@
+// Lo usual es siempre nomprar los archivos de los modelos con la primer letra en mayúscula, por ejemplo: User.js, Post.js, etc. Esto es porque el ORM trabaja con clases y no con objetos. Es decir que, todo lo que crea lo instancia como si fuera una clase. Por ejemplo, si tenemos un modelo llamado User, el ORM lo instanciará como si fuera una clase llamada User. Por eso es que se recomienda nombrar los modelos con la primer letra en mayúscula.
+
+// Este modelo tiene las siguientes características:
+// id: es un campo de tipo entero, que es la clave primaria y que se autoincrementa.
+// name: es un campo de tipo string, que no puede ser nulo y que no puede estar vacío.
+// email: es un campo de tipo string, que no puede ser nulo, que debe ser único y que no puede estar vacío.
+// password: es un campo de tipo string, que no puede ser nulo y que no puede estar vacío.
+// active: es un campo de tipo entero, que por defecto es cero.
+// token: es un campo de tipo string.
+// expiration: es un campo de tipo date.
+
+import { Sequelize } from "sequelize";
+import bcrypt from "bcrypt";
+import db from "../config/db.js";
+
+const User = db.define('users', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    name: {
+        type: Sequelize.STRING(60),
+        allowNull: false, // no puede estar vacío
+    },
+    email: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+    },
+    password: {
+        type: Sequelize.STRING(60),
+        allowNull: false,
+    },
+    active: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    token: Sequelize.STRING,
+    confirmValue: Sequelize.BOOLEAN,
+}, {
+    hooks: {
+        beforeCreate: async function(user){
+            const salt = await bcrypt.genSalt(10); // Generar el salt o hash
+            user.password = await bcrypt.hash(user.password, salt); // Encriptar la contraseña
+        }
+    }
+});
+
+export default User; 

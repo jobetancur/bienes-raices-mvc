@@ -1,4 +1,5 @@
 // Siempre se debe agregar en el package.json el "type": "module" antes de usuarlo, de lo contrario no funcionará y se deberá usar require en lugar de import P.E => const express = require('express');
+import dotenv from 'dotenv';
 import express from 'express';
 import userRoutes from './routes/userRoutes.js'
 import db from './config/db.js';
@@ -6,9 +7,13 @@ import db from './config/db.js';
 // Create express instnace
 const app = express();
 
+// Habilitar body-parser para leer los datos del formulario
+app.use(express.urlencoded({ extended: true }));
+
 // Conexión a la base de datos.
 try {
   await db.authenticate();
+  db.sync(); // Sincroniza los modelos con la base de datos. Si no existen las tablas, las crea.
   console.log('Database connected');
 } catch (error) {
   console.log(error);
@@ -43,12 +48,8 @@ app.use(express.static('public'));
 // ORM significa Object Relational Mapping.
 // Ventajas de un ORM: Comenzar a crear aplicaciones que utilicen bases de datos, sin necesidad de escribir código SQL y tampoco saber sobre modelado de bases de datos. Además, el ORM se encarga de crear las tablas en la base de datos, de crear las relaciones entre las tablas, etc. También, el ORM nos permite crear consultas de forma más sencilla y rápida. P.E: En lugar de escribir una consulta SQL, podemos usar un método de Sequelize para crear la consulta.
 
-
-
-
-
 // Create PORT
-const PORT = 4000;
+const PORT = process.env.BACKEND_PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

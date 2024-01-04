@@ -23,13 +23,18 @@
 //? Después de crear el archivo CSS con la configuración de Tailwind, debemos inicializarlo usando: npx tailwindcss init -p
 
 import express from 'express';
-import { loginForm, signUpForm, resetPasswordForm } from '../controllers/userController.js';
+import { loginForm, signUpForm, newSignUpForm, resetPasswordForm, confirmAccount } from '../controllers/userController.js';
 
 // Se debe importar el módulo de router para poder usarlo.
 const router = express.Router();
 
 router.get('/login', loginForm);
 router.get('/signup', signUpForm);
+router.post('/signup', newSignUpForm);
+
 router.get('/reset-password', resetPasswordForm);
+
+// Endpoint para confirmar la cuenta
+router.get('/confirm-account/:token', confirmAccount);
 
 export default router;

@@ -1,9 +1,11 @@
 import Sequelize from "sequelize";
+import dotenv from "dotenv";
+dotenv.config({ path: '.env' });
 
-const db = new Sequelize('bienesraices_node_mvc', 'root', '1234', {
-    host: 'localhost',
+const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+    host: process.env.DB_HOST,
     dialect: 'mysql',
-    port: '3306',
+    port: process.env.DB_PORT,
     define: {
         timestamps: true // Crea dos columnas más en la tabla: createdAt y updatedAt.
     },
