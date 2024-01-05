@@ -1,7 +1,7 @@
 // Métodos HTTP:
 // GET: Obtener datos
 // POST: Enviar datos
-// PUT: Actualizar datos => Actualizar todos los datos. P.E: Actualizar todos los datos de un usuario. 
+// PUT: Actualizar datos => Actualizar todos los datos. P.E: Actualizar todos los datos de un usuario.
 // PATCH: Actualizar datos => Actualiza un dato en específico. P.E: Actualizar el nombre de un usuario.
 // DELETE: Eliminar datos
 
@@ -22,19 +22,37 @@
 //? Para instalar Tailwind CSS en Node se deben instalar las dependencias usando: npm i -D tailwindcss autoprefixer postcss postcss-cli
 //? Después de crear el archivo CSS con la configuración de Tailwind, debemos inicializarlo usando: npx tailwindcss init -p
 
-import express from 'express';
-import { loginForm, signUpForm, newSignUpForm, resetPasswordForm, confirmAccount } from '../controllers/userController.js';
+import express from "express";
+import {
+  loginForm,
+  authenticateUser,
+  signUpForm,
+  newSignUpForm,
+  resetPasswordForm,
+  confirmAccount,
+  resetPassword,
+  newPasswordForm,
+  createNewPassword,
+} from "../controllers/userController.js";
 
 // Se debe importar el módulo de router para poder usarlo.
 const router = express.Router();
 
-router.get('/login', loginForm);
-router.get('/signup', signUpForm);
-router.post('/signup', newSignUpForm);
+// Rutas para el Login
+router.get("/login", loginForm);
+router.post("/login", authenticateUser);
 
-router.get('/reset-password', resetPasswordForm);
+// Rutas para el registro de usuarios
+router.get("/signup", signUpForm);
+router.post("/signup", newSignUpForm);
+router.get("/confirm-account/:token", confirmAccount); // Endpoint para confirmar la cuenta de usuario
 
-// Endpoint para confirmar la cuenta
-router.get('/confirm-account/:token', confirmAccount);
+// Rutas para el reseteo de contraseña
+router.get("/reset-password", resetPasswordForm);
+router.post("/reset-password", resetPassword);
+
+// Rutas para crear nueva contraseña
+router.get('/new-password/:token', newPasswordForm);
+router.post('/new-password/:token', createNewPassword);
 
 export default router;

@@ -45,4 +45,10 @@ const User = db.define('users', {
     }
 });
 
+// Métodos personalizados
+// Método personalizado para comparar las contraseñas
+User.prototype.comparePassword = function(password){
+    return bcrypt.compareSync(password, this.password);
+}
+
 export default User; 
