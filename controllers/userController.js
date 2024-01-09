@@ -75,7 +75,7 @@ const authenticateUser = async (req, res) => {
         httpOnly: true, // La cookie solo se puede usar en el servidor
         secure: false, // La cookie solo se puede usar en HTTPS
         sameSite: false,
-    }).redirect('/profile'); // 2. Redireccionar al usuario a la página de inicio
+    }).redirect('/mis-propiedades'); // 2. Redireccionar al usuario a la página de inicio
 
 }    
 

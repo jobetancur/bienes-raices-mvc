@@ -1,0 +1,82 @@
+extends ../layout/index
+
+block styles
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+
+block content
+    section 
+        h1(class='text-4xl my-10 font-extrabold text-center') Bienes 
+            span(class='font-normal') Raices
+        h2(class='text-center text-2xl font-bold')=page
+
+    section(class='bg-white shadow py-8 px-4 rounded max-w-4xl my-8 mx-auto md:px-10')
+        form(class='space-y-8')
+            div(class='')
+                h3(class='text-lg leading-6 font-medium text-gray-900') Datos Generales
+                p(class='text-sm text-gray-600') Agregra información general sobre la propiedad en venta 
+
+                div
+                    label(class='block text-gray-500 text-sm uppercase mt-6 mb-2 font-bold', for='title') Título del anuncio
+                    input(id='title' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700', type='text', placeholder='Título del anuncio' name='title')
+                div 
+                    label(class='block text-gray-500 text-sm uppercase mt-6 mb-2 font-bold', for='description') Descripción
+                    textarea(id='description' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700', placeholder='Descripción del inmueble' name='description')
+                div(class='grid grid-cols-1 md:grid-cols-2 md:gap-4')
+                    div
+                        label(class="block text-gray-500 text-sm uppercase mt-4 mb-2 font-bold md:mt-6", for="category" ) Categoría
+                        select(id="category" class="w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700" name="category")
+                            option(value="") -- Selecciona una categoría --
+                            each category in categories
+                                option(value=category.id)=category.name
+                    div
+                        label(class="block text-gray-500 text-sm uppercase mt-6 mb-2 font-bold", for="price" ) Rango de precio 
+                        select(id='price' class="w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700" name="price")
+                            option(value="") -- Selecciona un rango de precio --
+                            each price in prices
+                                option(value=price.id)=price.price
+                div(class='grid grid-cols-1 md:grid-cols-3 md:gap-4 mb-8 md:mt-2')
+                    div 
+                        label(class='block text-gray-500 text-sm uppercase mt-6 mb-2 font-bold md:mt-6', for='rooms') Habitaciones
+                        select(id='rooms' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700' name='rooms')
+                            option(value='') -- Habitaciones --
+                            - let n = 1;
+                            while n <= 5
+                                option(value=n)=n
+                                - n++;
+                    div
+                        label(class='block text-gray-500 text-sm uppercase mt-6 mb-2 font-bold' for='parking') Estacionamiento    
+                        select(id='parking' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700' name='parking')
+                            option(value='') -- Estacionamientos --  
+                            - let x = 1;
+                            while x <= 5
+                                option(value=x)=x
+                                - x++; 
+                    div
+                        label(class='block text-gray-500 text-sm uppercase mt-6 mb-2 font-bold' for='wc') Baños
+                        select(id='wc' class='w-full px-3 py-2 text-gray-700 focus:outline-none border rounded-lg focus:border-indigo-700' name='wc')
+                            option(value='') -- Número de baños --
+                            - let y = 1;
+                            while y <= 5
+                                option(value=y)=y
+                                - y++;
+                div(class='border-gray-200 border-t py-5 space-y-3 mt-[20px]' )
+                    h3(class='text-lg leading-6 font-medium text-gray-900') Localización
+                    p(class='text-sm text-gray-600') Asegurate de marcar la ubicación correcta del inmueble
+                    div(id='map' class='h-96 mt-[20px]')
+                    div(class='grid grid-cols-1 md:grid-cols-2 md:gap-4')
+                        p(class='street')
+                    input(type='hidden' id='street' name='street')
+                    input(type='hidden' id='lat' name='lat')
+                    input(type='hidden' id='lng' name='lng')
+
+block scripts
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js") 
+    script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
+    script(src="/js/map.js") 
+                
+
+                        
+                            
+
