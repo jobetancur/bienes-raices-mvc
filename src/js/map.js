@@ -1,6 +1,6 @@
 (function() {
-    const lat = 6.2363764;
-    const lng = -75.5946371;
+    const lat = document.querySelector('#lat').value || 6.2363764;
+    const lng = document.querySelector('#lng').value || -75.5946371;
     const map = L.map('map').setView([lat, lng ], 12);
     let market;
 

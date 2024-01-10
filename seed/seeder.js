@@ -1,8 +1,8 @@
 import categories from './categories.js';
 import prices from './prices.js';
-import Categories from '../models/Categories.js';
-import Prices from '../models/Prices.js';
+import users from './users.js';
 import db from '../config/db.js';
+import { Categories, Prices, User } from '../models/index.js';
 
 const importData = async () => {
     try {
@@ -17,6 +17,7 @@ const importData = async () => {
         await Promise.all([ 
             Categories.bulkCreate(categories),
             Prices.bulkCreate(prices),
+            User.bulkCreate(users),
         ])
         console.log('Datos insertados correctamente.');
 
@@ -51,6 +52,6 @@ if(process.argv[2] === '-i') { // node seed/seeder.js -i
     importData();
 }
 
-if(process.argv[2] === '-e') {
+if(process.argv[2] === '-e') { // node seed/seeder.js -e
     deleteData();
 }

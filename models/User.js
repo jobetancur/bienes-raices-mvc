@@ -42,6 +42,11 @@ const User = db.define('users', {
             const salt = await bcrypt.genSalt(10); // Generar el salt o hash
             user.password = await bcrypt.hash(user.password, salt); // Encriptar la contraseña
         }
+    },
+    scopes: { 
+        deletePassword: { // Este scope es para que no se devuelva la contraseña en las consultas
+            attributes: { exclude: ['password', 'token', 'active', 'createdAt', 'updatedAt'] }
+        }
     }
 });
 
