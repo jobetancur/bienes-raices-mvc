@@ -1,0 +1,20 @@
+extends ../layout/admin
+
+block styles
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.css")
+    meta(name="csrf-token", content=csrfToken)
+
+block content
+    section 
+        h1(class='text-4xl my-10 font-extrabold text-center') Bienes 
+            span(class='font-normal') Raices
+        h2(class='text-center text-2xl font-bold')=page
+
+        section(class='bg-white shadow py-8 px-4 rounded max-w-4xl my-8 mx-auto md:px-10')
+            form(id='image' class='dropzone border-dashed border-2 w-full min-h-48 mb-6 flex justify-center items-center text-gray-400 font-semibold rounded-md' action=`/mis-propiedades/agregar-imagen/${realEstate.id}` method='POST')
+                input(id='csrf' type='hidden' name='_csrf' value=csrfToken)
+                
+            button(id='publish-button' type="button" class="bg-indigo-700 hover:bg-indigo-600 w-full p-3 text-white uppercase font-bold rounded-lg cursor-pointer" ) Publicar propiedad
+
+block scripts
+    script(src='/js/upLoadImage.js')

@@ -4,8 +4,11 @@ import {
   getMyRealEstates,
   getCreateRealEstate,
   postCreateRealEstate,
+  getUploadRealEstateImage,
+  postUploadRealEstateImage,
 } from "../controllers/realEstateController.js";
 import protectedRoute from "../middleware/protectedRoute.js";
+import upload from "../middleware/upLoadImage.js";
 
 const router = express.Router();
 
@@ -16,7 +19,6 @@ router.post("/mis-propiedades/crear-propiedad",
     // Validaciones
     body('title').notEmpty().withMessage('El título es obligatorio.'),
     body('description').notEmpty().withMessage('La descripción es obligatoria.'),
-    body('description').isLength({ min: 10 }).withMessage('La descripción debe tener al menos 10 caracteres.'),
     body('description').isLength({ max: 300 }).withMessage('La descripción debe tener como máximo 200 caracteres.'),
     body('category').isNumeric().withMessage('La categoría es obligatoria.'),
     body('price').isNumeric().withMessage('El precio es obligatorio.'),
@@ -26,6 +28,13 @@ router.post("/mis-propiedades/crear-propiedad",
     body('lat').notEmpty().withMessage('Ubica la propiedad en el mapa.'),
 
     postCreateRealEstate
+);
+
+router.get('/mis-propiedades/agregar-imagen/:id',  protectedRoute, getUploadRealEstateImage );
+router.post('/mis-propiedades/agregar-imagen/:id',  
+  protectedRoute, 
+  upload.single('image'),
+  postUploadRealEstateImage,
 );
 
 export default router;

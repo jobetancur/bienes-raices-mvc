@@ -4,6 +4,7 @@ export default {
     mode: 'development',
     entry: {
         map: './src/js/map.js',
+        upLoadImage: './src/js/upLoadImage.js',
     },
     output: {
         filename: '[name].js',
