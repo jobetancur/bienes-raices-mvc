@@ -290,6 +290,35 @@ const deleteRealEstate = async (req, res) => {
     res.redirect('/mis-propiedades');
 }
 
+// GET para mostrar una propiedad por id de manera pública.
+const getRealEstateById = async (req, res) => {
+
+    const {id} = req.params;
+
+    // Validar que la propiedad exista
+    const realEstate = await RealEstate.findByPk(id, {
+        include: [
+            {model: Prices, as: 'price'},
+            {model: Categories, as: 'category'},
+        ],
+    });
+
+    if (!realEstate) {
+        res.redirect('/404');
+    }
+
+    // Validar que la propiedad esté publicada
+    if (realEstate.public === 0) {
+        res.redirect('/404');
+    }
+    
+    res.render('real-estates/real-estate', {
+        page: realEstate.title,
+        description: 'Propiedad',
+        realEstate,
+    });
+}
+
 export {
     getMyRealEstates,
     getCreateRealEstate,
@@ -299,4 +328,5 @@ export {
     editRealEstate,
     postEditRealEstate,
     deleteRealEstate,
+    getRealEstateById,
 }

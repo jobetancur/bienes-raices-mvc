@@ -4,6 +4,7 @@ export default {
     mode: 'development',
     entry: {
         map: './src/js/map.js',
+        viewMap: './src/js/viewMap.js',
         upLoadImage: './src/js/upLoadImage.js',
     },
     output: {
