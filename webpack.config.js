@@ -5,6 +5,7 @@ export default {
     entry: {
         map: './src/js/map.js',
         viewMap: './src/js/viewMap.js',
+        mapHome: './src/js/mapHome.js',
         upLoadImage: './src/js/upLoadImage.js',
     },
     output: {

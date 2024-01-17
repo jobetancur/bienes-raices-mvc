@@ -11,7 +11,7 @@ block content
         //- pre= JSON.stringify(realEstates, null, 2) 
 
         if realEstates.length
-            div(class='bg-white shadow rounded-lg')
+            div(class='bg-white shadow rounded-lg mb-10')
                 ul(class='divide-y divide-gray-200')
                     each realEstate in realEstates
                         li
@@ -30,10 +30,28 @@ block content
                                     form(action="#" class='space-x-2 md:space-x-0 md:gap-2')
                                         input(type='hidden' name='_csrf' value=csrfToken)
                                         input(class=`${realEstate.public ? 'bg-green-400' : 'bg-yellow-400'} text-white font-bold rounded mx-auto text-xs min-w-[100px] py-1 cursor-pointer w-full leading-5` type="submit" value=`${realEstate.public ? 'Publicado' : 'No publicado'}`)
-                                    a(href=`/mis-propiedades/editar/${realEstate.id}` class='bg-indigo-100 text-indigo-800 font-bold rounded leading-5 text-xs py-1 cursor-pointer text-center min-w-[100px]') Editar
+                                    a(href=`/mis-propiedades/editar/${realEstate.id}` class='ml-[15px] md:ml-[0px] bg-indigo-100 text-indigo-800 font-bold rounded leading-5 text-xs py-1 cursor-pointer text-center min-w-[100px]') Editar
                                     form(action=`/mis-propiedades/eliminar/${realEstate.id}` method='POST' class='space-x-2 md:space-x-0 md:gap-2')
                                         input(type='hidden' name='_csrf' value=csrfToken)
                                         input(class='text-red-800 bg-red-100 font-bold rounded mx-auto text-xs min-w-[100px] py-1 cursor-pointer w-full leading-5' type="submit" value='Eliminar')
-
+                //- Pagination
+                div(class='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6')
+                    //- Mobile pagination
+                    div(class='flex-1 flex justify-between sm:hidden')
+                        a(href=`/mis-propiedades?pagina=${parseInt(currentPage) - 1}` class=`${ parseInt(currentPage) === 1 && 'pointer-events-none bg-gray-200' } relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50`) Anterior
+                        a(href=`/mis-propiedades?pagina=${parseInt(currentPage) + 1}`  class=`${ parseInt(currentPage) === totalPages && 'pointer-events-none bg-gray-200' } ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50`) Siguiente
+                    //- Desktop pagination
+                    div(class='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between')
+                        p(class='text-sm text-gray-700 gap-2 flex items-center') Mostrando 
+                            span(class='font-medium') #{offset + 1}  a
+                            span(class='font-medium') #{total < limit + offset ? total : limit + offset} de 
+                            span(class='font-medium') #{total} resultados
+                    div(class='hidden sm:block')
+                        nav(class='relative z-0 inline-flex rounded-md shadow-md')
+                            - let n = 1;
+                                while n <= totalPages
+                                    a(href=`/mis-propiedades?pagina=${n}` class=`${n == currentPage ? 'bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500'} relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer hover:bg-gray-50`)= n
+                                    - n++;
+                        
         else
             p(class='text-center text-xl font-bold') No tienes propiedades registradas
