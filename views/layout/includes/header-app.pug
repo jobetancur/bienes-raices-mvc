@@ -1,0 +1,25 @@
+header(class='bg-indigo-600 py-4')
+    div(class='container mx-auto bg-indigo-600 px-2 flex justify-between items-center')
+        a(href='/')
+            h1(class='text-2xl text-white font-extrabold text-center') Bienes 
+                span(class='font-normal') Raices
+        
+        nav(class='flex items-center text-sm text-center')
+            a(href="/auth/signup" class="text-white font-bold py-2 px-4 rounded hover:text-indigo-200") Crear cuenta
+            a(href="/auth/login" class="text-white font-bold py-2 px-4 rounded hover:text-indigo-200") Iniciar sesión
+            
+div(class='bg-indigo-700 py-3 hidden lg:block')
+    div(class='container mx-auto flex justify-between')
+        nav(class='flex items-center text-sm')
+            a(href='/categorias/1' class='text-sm font-bold uppercase text-white py-2 px-4 rounded hover:bg-indigo-800') Casas 
+            a(href='/categorias/2' class='text-sm font-bold uppercase text-white py-2 px-4 rounded hover:bg-indigo-800') Apartamentos
+            a(href='/categorias/3' class='text-sm font-bold uppercase text-white py-2 px-4 rounded hover:bg-indigo-800') Terrenos
+            a(href='/categorias/4' class='text-sm font-bold uppercase text-white py-2 px-4 rounded hover:bg-indigo-800') Locales Comerciales
+            a(href='/categorias/6' class='text-sm font-bold uppercase text-white py-2 px-4 rounded hover:bg-indigo-800') Bodegas
+            a(href='/categorias/5' class='text-sm font-bold uppercase text-white py-2 px-4 rounded hover:bg-indigo-800') Oficinas
+
+        form(action='/busqueda' method='POST' class='flex items-center gap-4')
+            input(type='hidden' name='_csrf' value=csrfToken)
+            label(for='termino' class='text-white font-bold') Busqueda:
+            input(id='termino' type='text' name='termino' placeholder='Buscar propiedades' class='bg-white py-2 px-3 border-none shadow rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent text-sm')
+            input(type='submit' class='hover:bg-indigo-800 rounded-lg py-2 px-3 text-white font-bold cursor-pointer text-sm' value='Buscar')

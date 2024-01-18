@@ -4,25 +4,68 @@ import {Prices, Categories, RealEstate} from "../models/index.js";
 
 // GET de mis-propiedades
 const getMyRealEstates = async (req, res) => {
-    const {id} = req.user; // id del usuario autenticado
 
-    // Consultar las propiedades del usuario autenticado
-    const realEstates = await RealEstate.findAll({
-        where: {
-            userId: id,
-        },
-        include: [
-            {model: Prices, as: 'price'},
-            {model: Categories, as: 'category'},
-        ],
-    });
+    // Leer QueryString
+    const currentPage = req.query.pagina;
 
-    res.render('real-estates/my-real-estates', {
-        page: 'Mis propiedades',
-        description: 'Administra tus propiedades',
-        realEstates,
-        csrfToken: req.csrfToken(),
-    });
+    // Expresión regular para validar y comparar que currentPage sea un número positivo y entero.
+    const regex = /^[1-9]+$/;
+
+    // Validar que currentPage sea un número positivo y entero.
+    if (!regex.test(currentPage)) {
+        return res.redirect('/mis-propiedades?pagina=1');
+    } 
+
+    try {
+        const {id} = req.user; // id del usuario autenticado
+
+        // Limites y offset para la paginación
+        const limit = 5;
+        const offset = currentPage ? (parseInt(currentPage) - 1) * limit : 0; 
+        // Si currentPage es undefined, se le asigna 0. Si currentPage es un número, se le resta 1 y se multiplica por el límite. Esto con el fin de que la paginación empiece desde 0 y no desde 1. Ejemplo: currentPage = 2, offset = (2 - 1) * 5 = 5. Esto quiere decir que se obtendrán los registros desde el 5 hasta el 10. currentPage = 1, offset = (1 - 1) * 5 = 0. Esto quiere decir que se obtendrán los registros desde el 0 hasta el 5. currentPage = undefined, offset = 0. Esto quiere decir que se obtendrán los registros desde el 0 hasta el 5. currentPage = 0, offset = (0 - 1) * 5 = -5. Esto quiere decir que se obtendrán los registros desde el -5 hasta el 0. Esto no es posible porque no hay registros con índice negativo. Por eso se le asigna 0 a currentPage si es undefined.
+
+        // Consultar las propiedades del usuario autenticado
+        const [ realEstates, total ] = await Promise.all([
+            RealEstate.findAll({
+                limit,
+                offset,
+                where: {
+                    userId: id,
+                },
+                include: [
+                    {model: Prices, as: 'price'},
+                    {model: Categories, as: 'category'},
+                ],
+            }),
+            RealEstate.count({ // count() es un método de Sequelize que cuenta los registros de una tabla.
+                where: {
+                    userId: id,
+                },
+            }),
+        ]);
+
+        // Calcular el total de páginas
+        const totalPages = Math.ceil(total / limit);
+
+        // Validar que currentPage sea menor o igual al total de páginas
+        if (currentPage > totalPages) {
+            return res.redirect(`/mis-propiedades?pagina=${totalPages}`);
+        }
+
+        res.render('real-estates/my-real-estates', {
+            page: 'Mis propiedades',
+            description: 'Administra tus propiedades',
+            realEstates,
+            csrfToken: req.csrfToken(),
+            totalPages,
+            currentPage,
+            total,
+            offset,
+            limit,
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // GET /mis-propiedades/crear-propiedad
@@ -290,6 +333,36 @@ const deleteRealEstate = async (req, res) => {
     res.redirect('/mis-propiedades');
 }
 
+// GET para mostrar una propiedad por id de manera pública.
+const getRealEstateById = async (req, res) => {
+
+    const {id} = req.params;
+
+    // Validar que la propiedad exista
+    const realEstate = await RealEstate.findByPk(id, {
+        include: [
+            {model: Prices, as: 'price'},
+            {model: Categories, as: 'category'},
+        ],
+    });
+
+    if (!realEstate) {
+        res.redirect('/404');
+    }
+
+    // Validar que la propiedad esté publicada
+    if (realEstate?.public == 0) {
+        res.redirect('/404');
+    }
+    
+    res.render('real-estates/real-estate', {
+        page: realEstate?.title,
+        description: 'Propiedad',
+        realEstate,
+        csrfToken: req.csrfToken(),
+    });
+}
+
 export {
     getMyRealEstates,
     getCreateRealEstate,
@@ -299,4 +372,5 @@ export {
     editRealEstate,
     postEditRealEstate,
     deleteRealEstate,
+    getRealEstateById,
 }

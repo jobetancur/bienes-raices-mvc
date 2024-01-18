@@ -1,0 +1,23 @@
+extends layout/app
+
+block content 
+
+    section(class='py-5')
+        h2(class='text-center text-4xl font-extrabold pt-5')= page
+
+        if realEstates.length
+            div(class='grid grid-cols-1 lg:grid-cols-3 gap-5 mt-5')
+                each realEstate in realEstates 
+                    div(class='bg-white shadow rounded-lg')
+                        img(src=`/uploads/${realEstate.image}` class='object-cover h-72 w-full rounded' alt='realEstate')
+                        div(class='px-3 py-2 space-y-3')
+                            h3(class='text-xl font-bold text-gray-800')= realEstate.title
+                            p(class='text-sm text-gray-600') Habitaciones: 
+                                span(class='font-bold text-gray-800')= realEstate.rooms
+                            p(class='text-sm text-gray-600') Baños: 
+                                span(class='font-bold text-gray-800')= realEstate.wc
+                            p(class='text-sm text-gray-600') Precio: 
+                                span(class='font-bold text-gray-800')= realEstate.price.price
+                            a(href=`/propiedad/${realEstate.id}` class='block text-center bg-indigo-600 text-white font-bold py-2 rounded hover:bg-indigo-700') Ver propiedad
+        else 
+            p(class='text-center text-2xl text-gray-800 font-bold mt-10') No se encontraron propiedades con ese criterio de búsqueda

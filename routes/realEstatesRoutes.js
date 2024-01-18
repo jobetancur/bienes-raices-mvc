@@ -9,6 +9,7 @@ import {
   editRealEstate,
   postEditRealEstate,
   deleteRealEstate,
+  getRealEstateById,
 } from "../controllers/realEstateController.js";
 import protectedRoute from "../middleware/protectedRoute.js";
 import upload from "../middleware/upLoadImage.js";
@@ -62,5 +63,9 @@ router.post('/mis-propiedades/editar/:id',
 
 // Ruta para eliminar una propiedad
 router.post('/mis-propiedades/eliminar/:id', protectedRoute, deleteRealEstate);
+
+// Área pública
+// GET para listar todas las propiedades
+router.get('/propiedad/:id', getRealEstateById);
 
 export default router;

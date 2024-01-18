@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
+import apiRoutes from './routes/apiRoutes.js';
+import appRoutes from './routes/appRoutes.js';
 import userRoutes from './routes/userRoutes.js'
 import realEstatesRoutes from './routes/realEstatesRoutes.js';
 import db from './config/db.js';
@@ -29,8 +31,10 @@ try {
 }
 
 // El método .use busca todas las rutas que inicien o se deriven de la ruta especificada. En este caso, todas las rutas que se deriven de la ruta '/'. Por otro lado, si usamos .get, solo se buscará la ruta especificada, no escanea nada más.
+app.use('/', appRoutes);
 app.use('/auth', userRoutes);
 app.use('/', realEstatesRoutes);
+app.use('/api', apiRoutes);
 
 // Habilitar PUG => Template Engine. Se debe instalar el paquete pug con npm i pug.
 app.set('view engine', 'pug');
