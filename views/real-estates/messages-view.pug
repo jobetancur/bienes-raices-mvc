@@ -1,0 +1,33 @@
+extends ../layout/admin
+
+block content
+    section
+        h2(class='text-4xl my-10 font-extrabold text-center') Bienes 
+            span(class='font-normal') Raices
+        h2(class='text-center text-2xl font-bold')=page
+
+        //- Botón para volver
+        a(href="/mis-propiedades" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-8 rounded my-5 mx-auto text-sm") Volver
+
+        //- pre= JSON.stringify(messages, null, 2)
+
+        //- Mostrar mensajes
+        if messages.length > 0
+            each message in messages
+               div(class='w-2/4 mx-auto bg-gray-200 py-5 px-10 rounded-lg mb-5 shadow-md')
+                    div
+                        //- Nombre del usuario
+                        p(class='text-sm text-gray-700 font-semibold') De: 
+                            span(class='font-normal text-sm') #{message.user.name}
+                        p(class='text-sm text-gray-700 font-semibold') Email: 
+                            span(class='font-normal text-sm') #{message.user.email}
+                    div(class='flex flex-col justify-start my-5')
+                        //- Mensaje
+                        p(class='text-sm text-indigo-600 font-semibold mb-2') Mensaje:
+                        p(class='text-sm text-gray-600 font-normal')= message.message
+                    div(class='flex justify-end')
+                        //- Fecha del mensaje
+                        p(class='text-sm text-indigo-500 font-semibold')= message.createdAt.toLocaleString()
+        else 
+            //- ¡Ups! Parece que no tienes mensajes para esta propiedad
+            p(class='text-center text-xl font-bold') ¡Ups! Parece que no tienes mensajes para esta propiedad

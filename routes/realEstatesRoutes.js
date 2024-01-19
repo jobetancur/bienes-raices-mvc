@@ -10,8 +10,11 @@ import {
   postEditRealEstate,
   deleteRealEstate,
   getRealEstateById,
+  sendMessage,
+  getMessages,
 } from "../controllers/realEstateController.js";
 import protectedRoute from "../middleware/protectedRoute.js";
+import identifyUser from "../middleware/identifyUser.js";
 import upload from "../middleware/upLoadImage.js";
 
 const router = express.Router();
@@ -50,7 +53,7 @@ router.post('/mis-propiedades/editar/:id',
   // Validaciones
   body('title').notEmpty().withMessage('El título es obligatorio.'),
   body('description').notEmpty().withMessage('La descripción es obligatoria.'),
-  body('description').isLength({ max: 300 }).withMessage('La descripción debe tener como máximo 200 caracteres.'),
+  body('description').isLength({ max: 300 }).withMessage('La descripción debe tener como máximo 300 caracteres.'),
   body('category').isNumeric().withMessage('La categoría es obligatoria.'),
   body('price').isNumeric().withMessage('El precio es obligatorio.'),
   body('rooms').isNumeric().withMessage('Selecciona el número de habitaciones.'),
@@ -66,6 +69,21 @@ router.post('/mis-propiedades/eliminar/:id', protectedRoute, deleteRealEstate);
 
 // Área pública
 // GET para listar todas las propiedades
-router.get('/propiedad/:id', getRealEstateById);
+router.get('/propiedad/:id', identifyUser, getRealEstateById);
+
+// Almacenar los mensajes enviados
+router.post('/propiedad/:id',
+  // Validación de identificación de usuario
+  identifyUser,
+
+  // Validaciones de los campos del formulario
+  body('message').isLength({ min: 30 }).withMessage('El mensaje es muy corto o el campo está vacío (mínimo 20 caracteres).'),
+  body('message').isLength({ max: 300 }).withMessage('El mensaje debe tener como máximo 300 caracteres.'),
+
+  // Envío del mensaje
+  sendMessage
+);
+
+router.get('/mensajes/:id', protectedRoute, getMessages);
 
 export default router;

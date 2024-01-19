@@ -1,6 +1,7 @@
 import { unlink } from "node:fs/promises";
 import {validationResult} from "express-validator";
-import {Prices, Categories, RealEstate} from "../models/index.js";
+import {Prices, Categories, RealEstate, Message, User} from "../models/index.js";
+import { isSeller } from "../helpers/index.js";
 
 // GET de mis-propiedades
 const getMyRealEstates = async (req, res) => {
@@ -35,6 +36,7 @@ const getMyRealEstates = async (req, res) => {
                 include: [
                     {model: Prices, as: 'price'},
                     {model: Categories, as: 'category'},
+                    {model: Message, as: 'messages'},
                 ],
             }),
             RealEstate.count({ // count() es un método de Sequelize que cuenta los registros de una tabla.
@@ -360,7 +362,85 @@ const getRealEstateById = async (req, res) => {
         description: 'Propiedad',
         realEstate,
         csrfToken: req.csrfToken(),
+        user: req.user,
+        isSeller: isSeller(req.user?.id, realEstate.userId),
     });
+}
+
+const sendMessage = async (req, res) => {
+    const {id} = req.params;
+
+    // Validar que la propiedad exista
+    const realEstate = await RealEstate.findByPk(id, {
+        include: [
+            {model: Prices, as: 'price'},
+            {model: Categories, as: 'category'},
+        ],
+    });
+
+    if (!realEstate) {
+        res.redirect('/404');
+    }
+
+    // Validar errores con validationResult
+    // Resultado de las validaciones
+    let result = validationResult(req);
+
+    // Si hay errores
+    if (!result.isEmpty()) {
+        return res.render('real-estates/real-estate', {
+            page: realEstate?.title,
+            realEstate,
+            csrfToken: req.csrfToken(),
+            user: req.user,
+            isSeller: isSeller(req.user?.id, realEstate.userId),
+            errors: result.array(),
+        });
+    }
+
+    // Almacenar el mensaje en la base de datos
+
+    await Message.create({
+        message: req.body.message,
+        realEstateId: id,
+        userId: req.user.id,
+    });
+
+    res.redirect('/');
+}
+
+// Leer mensajes recibidos de una propiedad
+const getMessages = async (req, res) => {
+
+    const {id} = req.params;
+
+    // Validar que la propiedad exista
+    const realEstate = await RealEstate.findByPk(id, {
+        include: [
+            { 
+                model: Message, as: 'messages',
+                include: [
+                    {model: User.scope('deletePassword'), as: 'user'},
+
+                ], 
+            },
+        ],
+    });
+
+    if (!realEstate) {
+        return res.redirect('/404');
+    }
+
+    // Validar que la propiedad le pertenezca al usuario que visita la ruta
+    if (realEstate?.userId.toString() !== req.user?.id.toString()) {
+        return res.redirect('/');
+    }
+
+    res.render('real-estates/messages-view', {
+        page: 'Mensajes',
+        csrfToken: req.csrfToken(),
+        messages: realEstate.messages.sort((a, b) => b.id - a.id),
+    })
 }
 
 export {
@@ -373,4 +453,6 @@ export {
     postEditRealEstate,
     deleteRealEstate,
     getRealEstateById,
+    sendMessage,
+    getMessages,
 }
