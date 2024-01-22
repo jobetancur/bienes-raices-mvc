@@ -6,10 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "node ./index.js",
-    "dev": "nodemon ./index.js",
+    "server": "nodemon ./index.js",
     "css": "postcss public/css/tailwind.css -o public/css/app.css --watch",
     "js": "webpack --watch",
-    "front": "concurrently \"npm run css\" \"npm run js\"",
+    "dev": "concurrently \"npm run css\" \"npm run js\"",
     "db:import": "node ./seed/seeder.js -i",
     "db:delete": "node ./seed/seeder.js -e"
   },
