@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/db.js";
 
-const RealEstate = db.define('realEstates', {
+const RealEstate = db.define('realestates', {
     id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
