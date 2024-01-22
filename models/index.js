@@ -5,12 +5,12 @@ import Categories from './Categories.js';
 import Message from './Message.js';
 // import Sequelize from 'sequelize';
 
-RealEstate.belongsTo(Prices);
-RealEstate.belongsTo(Categories);
-RealEstate.belongsTo(User);
-RealEstate.hasMany(Message, { foreignKey: 'realEstateIdMsg' });
+RealEstate.belongsTo(Prices, { foreignKey: 'priceId' });
+RealEstate.belongsTo(Categories, { foreignKey: 'categoryId' });
+RealEstate.belongsTo(User, { foreignKey: 'userId' });
+RealEstate.hasMany(Message, { foreignKey: 'realEstateId' });
 
-Message.belongsTo(RealEstate, { foreignKey: 'realEstateIdMsg'  });
+Message.belongsTo(RealEstate, { foreignKey: 'realEstateId'  });
 Message.belongsTo(User, { foreignKey: 'userId'  });
 
 export {
