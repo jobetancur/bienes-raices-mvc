@@ -100,6 +100,14 @@ const errorPage = (req, res) => {
     });
 }
 
+const notPublished = (req, res) => {
+    res.render('not-published', { 
+        title: 'Propiedad no publicada', 
+        page: 'Propiedad no publicada',
+        csrfToken: req.csrfToken(), 
+    });
+}
+
 const search = async (req, res) => {
     
     const { termino } = req.body;
@@ -140,4 +148,5 @@ export {
     categories,
     errorPage,
     search,
+    notPublished,
 }

@@ -26,6 +26,7 @@ import express from "express";
 import {
   loginForm,
   authenticateUser,
+  logoutUser,
   signUpForm,
   newSignUpForm,
   resetPasswordForm,
@@ -41,6 +42,9 @@ const router = express.Router();
 // Rutas para el Login
 router.get("/login", loginForm);
 router.post("/login", authenticateUser);
+
+// Rutas para cerrar sesión
+router.post("/logout", logoutUser);
 
 // Rutas para el registro de usuarios
 router.get("/signup", signUpForm);

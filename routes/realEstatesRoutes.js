@@ -6,6 +6,7 @@ import {
   postCreateRealEstate,
   getUploadRealEstateImage,
   postUploadRealEstateImage,
+  changeStateRealEstate,
   editRealEstate,
   postEditRealEstate,
   deleteRealEstate,
@@ -43,6 +44,9 @@ router.post('/mis-propiedades/agregar-imagen/:id',
   upload.single('image'),
   postUploadRealEstateImage,
 );
+
+// Ruta para cambiar el estado de la propiedad
+router.put('/mis-propiedades/:id', protectedRoute, changeStateRealEstate);
 
 // Hacemos el get con el id de la propiedad para mostrar solo esa información.
 router.get('/mis-propiedades/editar/:id', protectedRoute, editRealEstate)

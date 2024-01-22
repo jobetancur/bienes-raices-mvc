@@ -7,6 +7,7 @@ export default {
         viewMap: './src/js/viewMap.js',
         mapHome: './src/js/mapHome.js',
         upLoadImage: './src/js/upLoadImage.js',
+        changeState: './src/js/changeState.js',
     },
     output: {
         filename: '[name].js',

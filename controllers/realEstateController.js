@@ -209,6 +209,34 @@ const postUploadRealEstateImage = async (req, res, next) => {
 
 }
 
+// Cambiar estado de la propiedad (publicada o no publicada)
+const changeStateRealEstate = async (req, res) => {
+    const {id} = req.params;
+
+    // Validar que la propiedad exista
+    const realEstate = await RealEstate.findByPk(id);
+
+    if (!realEstate) {
+        res.redirect('/mis-propiedades');
+    }
+
+    // Validar que la propiedad le pertenezca al usuario que visita la ruta
+    if (realEstate?.userId.toString() !== req?.user?.id.toString()) {
+        res.redirect('/mis-propiedades');
+    }
+
+    // Cambiar el estado de la propiedad
+    realEstate.public = !realEstate.public;
+
+    // Guardar en la DB
+    await realEstate.save();
+
+    res.json({
+        result: 'ok' 
+    });
+    
+}
+
 const editRealEstate = async (req, res) => {
     const {id} = req.params;
 
@@ -354,7 +382,7 @@ const getRealEstateById = async (req, res) => {
 
     // Validar que la propiedad esté publicada
     if (realEstate?.public == 0) {
-        res.redirect('/404');
+        res.redirect('/propiedad-no-publicada');
     }
     
     res.render('real-estates/real-estate', {
@@ -449,6 +477,7 @@ export {
     postCreateRealEstate,
     getUploadRealEstateImage,
     postUploadRealEstateImage,
+    changeStateRealEstate,
     editRealEstate,
     postEditRealEstate,
     deleteRealEstate,

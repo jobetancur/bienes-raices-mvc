@@ -79,6 +79,12 @@ const authenticateUser = async (req, res) => {
 
 }    
 
+// POST para cerrar sesión
+const logoutUser = (req, res) => {
+    // Eliminar la cookie
+    return res.clearCookie('_token').status(200).redirect('/auth/login');
+}
+
 // GET para registrar un nuevo usuario
 const signUpForm = (req, res) => {
 
@@ -303,6 +309,7 @@ const createNewPassword = async (req, res) => {
 export {
     loginForm,
     authenticateUser,
+    logoutUser,
     signUpForm,
     resetPasswordForm,
     newSignUpForm,
