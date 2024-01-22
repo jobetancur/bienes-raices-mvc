@@ -15,7 +15,7 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.D
         acquire: 30000, // Tiempo máximo, en milisegundos, que se intentará establecer una conexión antes de arrojar un error.
         idle: 10000 // Tiempo máximo, en milisegundos, que una conexión puede estar inactiva antes de ser liberada.
     },
-    operatorsAliases: false // Para evitar el mensaje de advertencia.
+    // operatorsAliases: false // Para evitar el mensaje de advertencia.
 });
 
 export default db;
