@@ -8,9 +8,9 @@ import Message from './Message.js';
 RealEstate.belongsTo(Prices);
 RealEstate.belongsTo(Categories);
 RealEstate.belongsTo(User);
-RealEstate.hasMany(Message, { foreignKey: 'realEstateId' });
+RealEstate.hasMany(Message, { foreignKey: 'realEstateIdMsg' });
 
-Message.belongsTo(RealEstate, { foreignKey: 'realEstateId'  });
+Message.belongsTo(RealEstate, { foreignKey: 'realEstateIdMsg'  });
 Message.belongsTo(User, { foreignKey: 'userId'  });
 
 export {
