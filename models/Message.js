@@ -1,9 +1,9 @@
-import { Sequelize } from "sequelize";
+import { DataTypes } from 'sequelize';
 import db from "../config/db.js";
 
 const Message = db.define('messages', {
     message: {
-        type: Sequelize.STRING(300),
+        type: DataTypes.STRING(300),
         allowNull: false,
     },
 });

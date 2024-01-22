@@ -9,33 +9,33 @@
 // token: es un campo de tipo string.
 // expiration: es un campo de tipo date.
 
-import { Sequelize } from "sequelize";
+import { DataTypes } from "sequelize";
 import bcrypt from "bcrypt";
 import db from "../config/db.js";
 
 const User = db.define('users', {
     id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
     name: {
-        type: Sequelize.STRING(60),
+        type: DataTypes.STRING(60),
         allowNull: false, // no puede estar vacío
     },
     email: {
-        type: Sequelize.STRING(30),
+        type: DataTypes.STRING(30),
         allowNull: false,
     },
     password: {
-        type: Sequelize.STRING(60),
+        type: DataTypes.STRING(60),
         allowNull: false,
     },
     active: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         defaultValue: 0
     },
-    token: Sequelize.STRING,
+    token: DataTypes.STRING,
 }, {
     hooks: {
         beforeCreate: async function(user){

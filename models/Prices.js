@@ -1,9 +1,9 @@
-import { Sequelize } from "sequelize";
+import { DataTypes } from "sequelize";
 import db from "../config/db.js";
 
 const Prices = db.define('prices', {
     price: {
-        type: Sequelize.STRING(60),
+        type: DataTypes.STRING(30),
         allowNull: false,
     }
 });
